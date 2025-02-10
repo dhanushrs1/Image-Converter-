@@ -3,133 +3,185 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://opensource.org/licenses/MIT)
 
-A **free and open‑source** web-based tool that lets you convert, resize, compress, and edit images—all in one modern, responsive, and installable Progressive Web App (PWA).
+ ================================================================================
+                         Image Converter & Editor
+================================================================================
 
-## Table of Contents
+License: MIT (see LICENSE file)
+Open Source Project
 
-- [Features](#features)
-- [Demo](#demo)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Advanced Features](#advanced-features)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
-- [Additional Documentation](#additional-documentation)
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+1. Overview
+2. Features
+3. Demo
+4. Installation
+5. Usage
+6. Advanced Features
+7. Contributing
+8. License
+9. Acknowledgments
+10. Additional Documentation & Resources
+--------------------------------------------------------------------------------
 
-## Features
+1. OVERVIEW
+--------------------------------------------------------------------------------
+Image Converter & Editor is a free and open-source web-based tool that lets
+you convert, resize, compress, and edit images. It is built as a modern,
+responsive Progressive Web App (PWA) that users can install and even use
+offline.
 
-- **Image Conversion:** Convert images between PNG, JPEG, and WebP formats.
-- **Image Resizing:** Optionally adjust width and height; if only one dimension is provided, the aspect ratio is preserved.
-- **Compression:** Adjust image quality for JPEG/WebP formats with a slider.
-- **PWA Integration:** The app is installable and works offline via a manifest and service worker.
-- **Dark Mode:** Easily toggle between light and dark themes.
-- **Live Preview & Toast Notifications:** See a live preview of your uploaded image and receive a notification when processing is complete.
-- **Drag & Drop Upload:** User-friendly image upload via drag-and-drop.
-- **Advanced Editing (Planned):** Future enhancements include cropping, rotating, applying filters, and adding watermarks.
+--------------------------------------------------------------------------------
+2. FEATURES
+--------------------------------------------------------------------------------
+- Image Conversion: Convert images between PNG, JPEG, and WebP formats.
+- Image Resizing: Optionally adjust the width and height. If only one dimension
+  is provided, the aspect ratio is preserved.
+- Compression: Adjust image quality for JPEG/WebP formats with a slider.
+- PWA Integration: The app is installable and works offline using a manifest
+  and service worker.
+- Dark Mode: Easily toggle between light and dark themes.
+- Live Preview & Toast Notifications: See a live preview of your uploaded image
+  and receive a notification when processing is complete.
+- Drag & Drop Upload: Enjoy a user-friendly drag-and-drop image upload.
+- Advanced Editing (Planned): Future enhancements include cropping, rotating,
+  applying filters, and adding watermarks.
 
-## Demo
+--------------------------------------------------------------------------------
+3. DEMO
+--------------------------------------------------------------------------------
+You can view the live demo on GitHub Pages:
+  [Live Demo]: https://yourusername.github.io/your-repo-name
 
-View the live demo on GitHub Pages:  
-[Live Demo](https://yourusername.github.io/your-repo-name)
+If available, include screenshots or animated GIFs to show the tool in action.
+For example, a screenshot might be provided as:
+  [Screenshot of Image Converter & Editor]: screenshot.png
 
-*If available, include screenshots or animated GIFs below:*
+--------------------------------------------------------------------------------
+4. INSTALLATION
+--------------------------------------------------------------------------------
+To run the project locally, follow these steps:
 
-![Screenshot of Image Converter & Editor](screenshot.png)
+A. Clone the Repository
+   Open your terminal and run:
+     git clone https://github.com/yourusername/your-repo-name.git
+     cd your-repo-name
 
-## Installation
+B. Open the Project
+   This is a static web application. You can simply open the 'index.html'
+   file directly in your browser. Alternatively, you can use a local development
+   server. For example:
+     npx http-server .
 
-To run this project locally:
+C. Deploy to GitHub Pages
+   - Push your repository to GitHub.
+   - In your repository's Settings, navigate to the GitHub Pages section.
+   - Select the source branch (e.g., "main") and the root folder.
+   - Save and visit the provided URL to see your live site.
 
-1. **Clone the Repository**
+--------------------------------------------------------------------------------
+5. USAGE
+--------------------------------------------------------------------------------
+To use the Image Converter & Editor tool:
 
-   ```bash
-   git clone https://github.com/yourusername/your-repo-name.git
-   cd your-repo-name
-Open the Project
+1. Upload an Image:
+   - Click on the designated dropzone area or drag and drop your image file
+     into it.
 
-This is a static web application. Simply open the index.html file directly in your browser.
-Alternatively, you can use a local development server:
+2. Live Preview:
+   - Once the image is loaded, a live preview will appear on the page.
 
-bash
-Copy
-Edit
-npx http-server .
-Deploy to GitHub Pages
+3. Select Output Format:
+   - Choose from PNG, JPEG, or WebP via the dropdown menu.
 
-Push your repository to GitHub.
-In your repository’s Settings, navigate to the GitHub Pages section.
-Select the source branch (e.g., main) and the root folder.
-Save and visit the provided URL.
-Usage
-Upload an Image:
-Click on the dropzone or drag and drop your image file into it.
+4. Resize (Optional):
+   - Enter new width and/or height values. If you enter only one, the aspect
+     ratio will be preserved automatically.
 
-Preview:
-A live preview of the image will appear on the page.
+5. Adjust Compression:
+   - Use the quality slider to set the compression level for JPEG or WebP
+     formats (this option is ignored for PNG).
 
-Select Output Format:
-Choose between PNG, JPEG, or WebP from the dropdown menu.
+6. Convert:
+   - Click the "Convert Image" button. After processing, a download link
+     will be generated.
 
-Resize (Optional):
-Enter new width and/or height values. If you provide only one value, the tool will automatically preserve the aspect ratio.
+7. Download:
+   - Click the download link to save your converted image.
 
-Adjust Compression:
-Use the quality slider to set the compression level for JPEG or WebP formats (this option is ignored for PNG).
+--------------------------------------------------------------------------------
+6. ADVANCED FEATURES
+--------------------------------------------------------------------------------
+- Progressive Web App (PWA) Features:
+  The project includes a manifest file (manifest.json) and a service worker
+  (service-worker.js) for offline functionality and installability.
 
-Convert:
-Click the Convert Image button. When the conversion is complete, a download link will appear.
+- Dark Mode Toggle:
+  A toggle in the header allows users to switch between light and dark themes.
 
-Download:
-Click the download link to save your converted image.
+- Future Enhancements:
+  Planned improvements include additional image editing features such as:
+    • Cropping & Rotating
+    • Filter Effects (e.g., grayscale, sepia)
+    • Watermarking
+    • Batch Processing for multiple images at once
 
-Advanced Features
-Progressive Web App (PWA):
-The app includes a manifest.json and service-worker.js for offline functionality and installability.
+--------------------------------------------------------------------------------
+7. CONTRIBUTING
+--------------------------------------------------------------------------------
+Contributions are welcome! To contribute:
 
-Dark Mode Toggle:
-Switch between light and dark themes with the toggle in the header.
+A. Fork the Repository:
+   - Click the "Fork" button on the project's GitHub page.
 
-Future Enhancements:
-Planned features include additional image editing capabilities like cropping, rotating, filtering, watermarking, and batch processing.
+B. Create a New Branch:
+   - In your local clone, create a branch:
+       git checkout -b feature/your-feature-name
 
-Contributing
-Contributions are welcome! Please review our CONTRIBUTING.md file for detailed guidelines on how to contribute.
+C. Commit Your Changes:
+   - Make your changes and commit them with a descriptive message:
+       git commit -m "Add feature or fix issue"
 
-How to Contribute
-Fork the Repository:
-Click the "Fork" button on GitHub.
+D. Push to Your Branch:
+       git push origin feature/your-feature-name
 
-Create a New Branch:
+E. Open a Pull Request:
+   - Submit a pull request on GitHub to merge your changes into the main branch.
 
-bash
-Copy
-Edit
-git checkout -b feature/your-feature-name
-Commit Your Changes:
+Please see the CONTRIBUTING.md file for more detailed guidelines on coding
+standards, issue reporting, and pull request processes.
 
-bash
-Copy
-Edit
-git commit -m "Add feature or fix issue"
-Push to Your Branch:
+--------------------------------------------------------------------------------
+8. LICENSE
+--------------------------------------------------------------------------------
+This project is licensed under the MIT License. For full details, please see
+the LICENSE file included in the repository.
 
-bash
-Copy
-Edit
-git push origin feature/your-feature-name
-Open a Pull Request:
-Submit a pull request to the main branch.
+--------------------------------------------------------------------------------
+9. ACKNOWLEDGMENTS
+--------------------------------------------------------------------------------
+- Libraries & Resources:
+  • Cropper.js – for potential cropping functionality.
+  • CamanJS – for inspiration regarding image filtering.
+  • Google Fonts – used for the Roboto font.
+- Open Source Community:
+  Special thanks to all contributors and developers in the open source
+  community who make projects like this possible.
 
-If you find any issues, please open an issue.
+--------------------------------------------------------------------------------
+10. ADDITIONAL DOCUMENTATION & RESOURCES
+--------------------------------------------------------------------------------
+For extended documentation, FAQs, troubleshooting tips, and developer guides,
+please refer to the following files/folders in the repository:
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+- CONTRIBUTING.md  : Guidelines for contributing to the project.
+- CODE_OF_CONDUCT.md  : (Optional) Community standards for acceptable behavior.
+- CHANGELOG.md    : (Optional) A log of changes and version updates.
+- docs/          : (Optional folder) Additional documentation and guides.
 
-Acknowledgments
-Libraries & Resources:
-Cropper.js for potential cropping functionality.
-CamanJS for image filtering inspiration.
-Google Fonts (for the Roboto font).
-Open Source Community:
-Thanks to the developers and contributors who make open-source projects possible.
+================================================================================
+                             END OF DOCUMENTATION
+================================================================================
+
+Happy converting and editing!
