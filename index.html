@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image Converter & Editor</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <style>
+    /* Reset & Global Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Roboto', sans-serif; 
+      background: #f0f2f5; 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      transition: background 0.3s, color 0.3s; 
+    }
+    body.dark { background: #121212; color: #e0e0e0; }
+    /* Header */
+    header { 
+      background: #fff; 
+      padding: 1rem 2rem; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    header.dark { background: #1e1e1e; }
+    header h1 { font-size: 1.8rem; color: #667eea; }
+    /* Dark Mode Toggle Switch */
+    .toggle-switch { display: flex; align-items: center; cursor: pointer; }
+    .toggle-switch input { display: none; }
+    .slider { 
+      width: 40px; 
+      height: 20px; 
+      background: #ccc; 
+      border-radius: 20px; 
+      position: relative; 
+      transition: background 0.3s; 
+      margin-left: 0.5rem; 
+    }
+    .slider:before { 
+      content: ""; 
+      position: absolute; 
+      width: 16px; 
+      height: 16px; 
+      border-radius: 50%; 
+      background: #fff; 
+      top: 2px; 
+      left: 2px; 
+      transition: transform 0.3s; 
+    }
+    input:checked + .slider { background: #667eea; }
+    input:checked + .slider:before { transform: translateX(20px); }
+    /* Main */
+    main { 
+      flex: 1; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      padding: 1rem; 
+    }
+    .container { 
+      background: #fff; 
+      border-radius: 10px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+      width: 100%; 
+      max-width: 700px; 
+      padding: 2rem; 
+      transition: background 0.3s, color 0.3s; 
+    }
+    .container.dark { background: #1e1e1e; color: #e0e0e0; }
+    .container h2 { text-align: center; margin-bottom: 1rem; }
+    .container p { text-align: center; margin-bottom: 1.5rem; }
+    .input-group { margin-bottom: 1rem; }
+    .input-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+    /* Dropzone Styling */
+    .dropzone { 
+      border: 2px dashed #ccc; 
+      border-radius: 5px; 
+      padding: 2rem; 
+      text-align: center; 
+      color: #888; 
+      cursor: pointer; 
+      transition: background 0.3s, border-color 0.3s, color 0.3s; 
+      margin-bottom: 1rem; 
+    }
+    .dropzone:hover { background: #f9f9f9; }
+    .dropzone.dragover { background: #f0f0f0; border-color: #667eea; color: #333; }
+    input[type="file"] { display: none; }
+    /* Styled Select, Button & Inputs */
+    select, button, input[type="number"], input[type="range"] { 
+      width: 100%; 
+      padding: 0.75rem; 
+      border-radius: 5px; 
+      border: 1px solid #ccc; 
+      font-size: 1rem; 
+      transition: border-color 0.3s; 
+    }
+    select:focus, button:focus, input:focus { outline: none; border-color: #667eea; }
+    button { 
+      background: #667eea; 
+      color: #fff; 
+      border: none; 
+      cursor: pointer; 
+      margin-top: 1rem; 
+      transition: background 0.3s; 
+    }
+    button:hover { background: #556cd6; }
+    .resize-inputs { display: flex; gap: 1rem; }
+    .resize-inputs input { flex: 1; }
+    /* Download Link */
+    #downloadLink { 
+      display: block; 
+      text-align: center; 
+      margin-top: 1.5rem; 
+      text-decoration: none; 
+      color: #fff; 
+      background: #38a169; 
+      padding: 0.75rem; 
+      border-radius: 5px; 
+      transition: background 0.3s; 
+    }
+    #downloadLink:hover { background: #2f855a; }
+    /* Footer */
+    footer { 
+      background: #fff; 
+      text-align: center; 
+      padding: 1rem 2rem; 
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.1); 
+    }
+    footer.dark { background: #1e1e1e; }
+    footer p { color: #555; }
+    /* Image Preview */
+    #previewContainer { text-align: center; margin-bottom: 1rem; }
+    #previewContainer img { max-width: 100%; border-radius: 5px; }
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #667eea;
+      color: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 5px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+    #toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media (max-width: 480px) {
+      .container { padding: 1.5rem; }
+      .resize-inputs { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Dark Mode Toggle -->
+  <header id="header">
+    <h1>Image Converter & Editor</h1>
+    <div class="toggle-switch">
+      <span>Dark Mode</span>
+      <input type="checkbox" id="darkModeToggle">
+      <label for="darkModeToggle" class="slider"></label>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container" id="container">
+      <h2>Convert, Resize & Compress Your Images</h2>
+      <p>Upload an image, choose your options below, and click convert!</p>
+
+      <!-- File Selection with Drag & Drop -->
+      <div class="input-group">
+        <label for="imageInput" class="dropzone" id="dropzone">Click or Drag & Drop Image Here</label>
+        <input type="file" id="imageInput" accept="image/*">
+      </div>
+
+      <!-- Image Preview -->
+      <div id="previewContainer"></div>
+
+      <!-- Format Selector -->
+      <div class="input-group">
+        <label for="formatSelect">Output Format:</label>
+        <select id="formatSelect">
+          <option value="image/png">PNG</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+
+      <!-- Resize Options -->
+      <div class="input-group">
+        <label>Resize Image (optional):</label>
+        <div class="resize-inputs">
+          <input type="number" id="widthInput" placeholder="Width (px)" min="1">
+          <input type="number" id="heightInput" placeholder="Height (px)" min="1">
+        </div>
+      </div>
+
+      <!-- Quality Slider for Compression -->
+      <div class="input-group">
+        <label for="qualityInput">
+          Quality (for JPEG/WebP): <span id="qualityValue">0.92</span>
+        </label>
+        <input type="range" id="qualityInput" min="0.1" max="1" step="0.01" value="0.92">
+      </div>
+
+      <!-- Convert Button -->
+      <button id="convertButton">Convert Image</button>
+
+      <!-- Hidden Canvas for Conversion -->
+      <canvas id="canvas" style="display: none;"></canvas>
+
+      <!-- Download Link -->
+      <a id="downloadLink" download="converted_image" href="#" style="display: none;">Download Converted Image</a>
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast">Conversion Complete!</div>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <p>© 2025 Your Company. All rights reserved.</p>
+  </footer>
+
+  <script>
+    /* ===== Dark Mode Toggle ===== */
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const header = document.getElementById('header');
+    const container = document.getElementById('container');
+    const footer = document.getElementById('footer');
+
+    darkModeToggle.addEventListener('change', () => {
+      if(darkModeToggle.checked){
+        body.classList.add('dark');
+        header.classList.add('dark');
+        container.classList.add('dark');
+        footer.classList.add('dark');
+      } else {
+        body.classList.remove('dark');
+        header.classList.remove('dark');
+        container.classList.remove('dark');
+        footer.classList.remove('dark');
+      }
+    });
+
+    /* ===== PWA Service Worker Registration ===== */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch(err => {
+            console.log('Service Worker registration failed:', err);
+          });
+      });
+    }
+
+    /* ===== Toast Notification Function ===== */
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    /* ===== Image Processing ===== */
+    const imageInput = document.getElementById('imageInput');
+    const dropzone = document.getElementById('dropzone');
+    const convertButton = document.getElementById('convertButton');
+    const formatSelect = document.getElementById('formatSelect');
+    const widthInput = document.getElementById('widthInput');
+    const heightInput = document.getElementById('heightInput');
+    const qualityInput = document.getElementById('qualityInput');
+    const qualityValue = document.getElementById('qualityValue');
+    const canvas = document.getElementById('canvas');
+    const downloadLink = document.getElementById('downloadLink');
+    const previewContainer = document.getElementById('previewContainer');
+
+    let img = new Image();
+
+    // Drag & Drop Handlers
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+    dropzone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+    });
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if(file) {
+        imageInput.files = e.dataTransfer.files;
+        loadImage(file);
+      }
+    });
+    // Open file dialog on click
+    dropzone.addEventListener('click', () => {
+      imageInput.click();
+    });
+    imageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if(file) {
+        loadImage(file);
+      }
+    });
+    function loadImage(file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        img.src = event.target.result;
+        // Show live preview
+        previewContainer.innerHTML = '<img src="' + event.target.result + '" alt="Image Preview">';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Update quality slider display
+    qualityInput.addEventListener('input', function() {
+      qualityValue.textContent = qualityInput.value;
+    });
+
+    // Conversion & Processing
+    convertButton.addEventListener('click', function() {
+      if(!img.src) {
+        alert('Please select an image first!');
+        return;
+      }
+      if(!img.complete) {
+        img.onload = performConversion;
+      } else {
+        performConversion();
+      }
+    });
+    function performConversion() {
+      // Determine target dimensions
+      let targetWidth = parseInt(widthInput.value) || img.width;
+      let targetHeight = parseInt(heightInput.value) || img.height;
+      if(widthInput.value && !heightInput.value) {
+        targetHeight = Math.round((targetWidth / img.width) * img.height);
+      }
+      if(heightInput.value && !widthInput.value) {
+        targetWidth = Math.round((targetHeight / img.height) * img.width);
+      }
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+      const outputFormat = formatSelect.value;
+      const quality = parseFloat(qualityInput.value);
+      let dataURL;
+      if(outputFormat === 'image/jpeg' || outputFormat === 'image/webp') {
+        dataURL = canvas.toDataURL(outputFormat, quality);
+      } else {
+        dataURL = canvas.toDataURL(outputFormat);
+      }
+      let extension = 'png';
+      if(outputFormat === 'image/jpeg') extension = 'jpg';
+      else if(outputFormat === 'image/webp') extension = 'webp';
+      downloadLink.href = dataURL;
+      downloadLink.download = `converted_image.${extension}`;
+      downloadLink.textContent = `Download Converted Image (${extension.toUpperCase()})`;
+      downloadLink.style.display = 'block';
+      showToast('Conversion Complete!');
+    }
+  </script>
+</body>
+</html>
