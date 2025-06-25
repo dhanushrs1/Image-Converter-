@@ -2,6 +2,7 @@ const CACHE_NAME = 'img-converter-cache-v1';
 const urlsToCache = [
   './',
   './index.html',
+  './convert.html',
   './manifest.json',
   // List any additional assets (CSS, JS, images, etc.)
 ];
