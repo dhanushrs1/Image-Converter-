@@ -1,25 +1,21 @@
-const CACHE_NAME = 'img-converter-cache-v1';
+const CACHE_NAME = 'img-tools-cache-v1';
 const urlsToCache = [
   './',
   './index.html',
-  './manifest.json',
-  // List any additional assets (CSS, JS, images, etc.)
+  './converter.html',
+  './resize.html',
+  './compress.html',
+  './crop.html',
+  './rotate.html',
+  './manifest.json'
 ];
-
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
 });
-
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
+    caches.match(event.request).then(resp => resp || fetch(event.request))
   );
 });
