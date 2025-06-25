@@ -310,7 +310,12 @@
       dropzone.classList.remove('dragover');
       const file = e.dataTransfer.files[0];
       if(file) {
-        imageInput.files = e.dataTransfer.files;
+        // Update the hidden file input with the dropped file so the
+        // selected file can be reused by other handlers. FileList is
+        // read-only, so create a new DataTransfer object.
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        imageInput.files = dt.files;
         loadImage(file);
       }
     });
