@@ -11,111 +11,81 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --primary: #2a9d8f;
-      --primary-dark: #21867a;
-      --light-bg: #f6f8fa;
+      --primary: #bb86fc;
+      --primary-dark: #985eff;
+      --bg-dark: #121212;
+      --bg-light: #ffffff;
     }
     body {
       font-family: 'Roboto', sans-serif;
-      background: var(--light-bg);
+      background: var(--bg-dark);
+      color: #e0e0e0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       transition: background 0.3s, color 0.3s;
     }
-    body.dark { background: #121212; color: #e0e0e0; }
-    header {
-      background: #fff;
+    body.light { background: var(--bg-light); color: #333; }
+    header, footer {
+      background: #1e1e1e;
       padding: 1rem 2rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    header.dark { background: #1e1e1e; }
-    header h1 { font-size: 1.8rem; color: var(--primary); }
-    nav a {
-      margin-left: 1rem;
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-    }
-    header.dark nav a { color: #e0e0e0; }
-    nav a.active { font-weight: 700; }
+    header.light, footer.light { background: #f0f0f0; }
+    nav a { margin-left: 1rem; text-decoration: none; color: inherit; font-weight: 500; }
+    nav a.active { color: var(--primary); }
     .toggle-switch { display: flex; align-items: center; cursor: pointer; }
     .toggle-switch input { display: none; }
-    .slider {
-      width: 40px;
-      height: 20px;
-      background: #ccc;
-      border-radius: 20px;
-      position: relative;
-      transition: background 0.3s;
-      margin-left: 0.5rem;
-    }
-    .slider:before {
-      content: "";
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #fff;
-      top: 2px;
-      left: 2px;
-      transition: transform 0.3s;
-    }
+    .slider { width: 40px; height: 20px; background: #555; border-radius: 20px; position: relative; margin-left: 0.5rem; transition: background 0.3s; }
+    .slider:before { content:""; position:absolute; width:16px; height:16px; background:#fff; top:2px; left:2px; border-radius:50%; transition:transform 0.3s; }
     input:checked + .slider { background: var(--primary); }
     input:checked + .slider:before { transform: translateX(20px); }
-    main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; }
-    .hero h2 { font-size: 2rem; margin-bottom: 0.5rem; }
-    .hero p { margin-bottom: 1rem; }
-    .cta {
-      display: inline-block;
-      background: var(--primary);
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: background 0.3s;
-      margin-top: 1rem;
-    }
-    .cta:hover { background: var(--primary-dark); }
-    footer {
-      background: #fff;
-      text-align: center;
-      padding: 1rem 2rem;
-      box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-    }
-    footer.dark { background: #1e1e1e; }
-    ul { list-style: disc; margin: 1rem auto; padding-left: 1.25rem; max-width: 500px; text-align: left; }
+    main { flex:1; padding:2rem; text-align:center; }
+    .hero { margin-bottom:2rem; }
+    .hero h2 { font-size:2rem; margin-bottom:0.5rem; }
+    .cta { display:inline-block; background:var(--primary); color:#fff; padding:0.75rem 1.5rem; border-radius:5px; text-decoration:none; transition:background 0.3s; margin-top:1rem; }
+    .cta:hover { background:var(--primary-dark); }
+    .cards { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:1rem; }
+    .card { background:#1e1e1e; padding:1rem; border-radius:8px; width:160px; text-decoration:none; color:inherit; box-shadow:0 2px 6px rgba(0,0,0,0.4); transition:transform 0.2s; }
+    .card:hover { transform:translateY(-4px); }
+    .card h4 { margin-bottom:0.5rem; }
+    .light .card { background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
   </style>
 </head>
-<body>
+<body class="dark">
   <header id="header">
     <h1>Image Tools</h1>
-    <nav>
+    <nav class="nav-links">
       <a href="index.html" class="active">Home</a>
-      <a href="convert.html">Converter</a>
+      <a href="converter.html">Convert</a>
+      <a href="resize.html">Resize</a>
+      <a href="compress.html">Compress</a>
+      <a href="crop.html">Crop</a>
+      <a href="rotate.html">Rotate</a>
     </nav>
     <div class="toggle-switch">
-      <span>Dark Mode</span>
-      <input type="checkbox" id="darkModeToggle">
+      <span>Light Mode</span>
+      <input type="checkbox" id="darkModeToggle" checked>
       <label for="darkModeToggle" class="slider"></label>
     </div>
   </header>
   <main>
     <section class="hero">
-      <h2>Convert images right in your browser</h2>
-      <p>No uploads needed. Everything happens locally.</p>
-      <a href="convert.html" class="cta">Open Converter</a>
+      <h2>Powerful image tools in your browser</h2>
+      <p>No uploads required. Everything runs locally.</p>
+      <a href="converter.html" class="cta">Start Converting</a>
     </section>
-    <section class="info">
-      <h3>Features</h3>
-      <ul>
-        <li>Convert between PNG, JPEG and WebP.</li>
-        <li>Resize and compress images.</li>
-        <li>Works offline as a Progressive Web App.</li>
-      </ul>
+    <section class="tools">
+      <h3>Tools</h3>
+      <div class="cards">
+        <a class="card" href="converter.html"><h4>Format Converter</h4><p>Change file types quickly.</p></a>
+        <a class="card" href="resize.html"><h4>Image Resizer</h4><p>Adjust width and height.</p></a>
+        <a class="card" href="compress.html"><h4>Compressor</h4><p>Reduce JPEG size.</p></a>
+        <a class="card" href="crop.html"><h4>Cropper</h4><p>Crop unwanted areas.</p></a>
+        <a class="card" href="rotate.html"><h4>Rotator</h4><p>Rotate by 90° steps.</p></a>
+      </div>
     </section>
   </main>
   <footer id="footer">
@@ -126,16 +96,16 @@
     const body = document.body;
     const header = document.getElementById('header');
     const footer = document.getElementById('footer');
-    darkModeToggle.addEventListener('change', () => {
-      const dark = darkModeToggle.checked;
-      body.classList.toggle('dark', dark);
-      header.classList.toggle('dark', dark);
-      footer.classList.toggle('dark', dark);
-    });
+    const applyTheme = () => {
+      const light = !darkModeToggle.checked;
+      body.classList.toggle('light', light);
+      header.classList.toggle('light', light);
+      footer.classList.toggle('light', light);
+    };
+    darkModeToggle.addEventListener('change', applyTheme);
+    applyTheme();
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('service-worker.js');
-      });
+      window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js'));
     }
   </script>
 </body>

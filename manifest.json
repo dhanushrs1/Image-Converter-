@@ -1,10 +1,10 @@
 {
-    "name": "Image Converter & Editor",
-    "short_name": "ImgConverter",
+    "name": "Image Tools",
+    "short_name": "ImgTools",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#f6f8fa",
-    "theme_color": "#2a9d8f",
+    "background_color": "#121212",
+    "theme_color": "#bb86fc",
     "icons": [
       {
         "src": "icon-192.png",
