@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image Converter</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #bb86fc;
+      --primary-dark: #985eff;
+      --bg-dark: #121212;
+      --bg-light: #ffffff;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg-dark);
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.light {
+      background: var(--bg-light);
+      color: #333;
+    }
+    header, footer {
+      background: #1e1e1e;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header.light, footer.light { background: #f0f0f0; }
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: inherit;
+      font-weight: 500;
+    }
+    nav a.active { color: var(--primary); }
+    .toggle-switch { display: flex; align-items: center; cursor: pointer; }
+    .toggle-switch input { display: none; }
+    .slider {
+      width: 40px; height: 20px; background: #555; border-radius: 20px; margin-left: 0.5rem;
+      position: relative; transition: background 0.3s;
+    }
+    .slider:before {
+      content: ""; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #fff;
+      top: 2px; left: 2px; transition: transform 0.3s;
+    }
+    input:checked + .slider { background: var(--primary); }
+    input:checked + .slider:before { transform: translateX(20px); }
+    main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem; }
+    .container { background: #1e1e1e; padding: 2rem; border-radius: 10px; width: 100%; max-width: 500px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+    .container.light { background: #fff; }
+    .container h2 { text-align: center; margin-bottom: 1rem; }
+    .input-group { margin-bottom: 1rem; }
+    input, select, button { width: 100%; padding: 0.5rem; border-radius: 5px; border: 1px solid #444; background: transparent; color: inherit; }
+    input:focus, select:focus, button:focus { outline: none; border-color: var(--primary); }
+    button { background: var(--primary); border: none; color: #fff; cursor: pointer; transition: background 0.3s; }
+    button:hover { background: var(--primary-dark); }
+    #downloadLink { display: none; margin-top: 1rem; text-align: center; text-decoration: none; background: var(--primary); color: #fff; padding: 0.5rem; border-radius: 5px; }
+    #previewContainer { text-align: center; margin-bottom: 1rem; }
+    #previewContainer img { max-width: 100%; border-radius: 5px; }
+  </style>
+</head>
+<body class="dark">
+  <header id="header">
+    <h1>Image Tools</h1>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="converter.html">Convert</a>
+      <a href="resize.html">Resize</a>
+      <a href="compress.html">Compress</a>
+      <a href="crop.html">Crop</a>
+      <a href="rotate.html">Rotate</a>
+    </nav>
+    <div class="toggle-switch">
+      <span>Light Mode</span>
+      <input type="checkbox" id="darkModeToggle" checked>
+      <label for="darkModeToggle" class="slider"></label>
+    </div>
+  </header>
+  <main>
+    <div class="container" id="container">
+      <div class="input-group"><input type="file" id="imageInput" accept="image/*"></div>
+      <div id="previewContainer"></div>
+      <div class="input-group"><select id="formatSelect"><option value="image/png">PNG</option><option value="image/jpeg">JPEG</option><option value="image/webp">WebP</option></select></div>
+      <button id="convertButton">Convert</button>
+      <canvas id="canvas" style="display:none;"></canvas>
+      <a id="downloadLink"></a>
+    </div>
+  </main>
+  <footer id="footer">
+    <p>© 2025 Dhanush R S || All rights reserved.</p>
+  </footer>
+  <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const header = document.getElementById('header');
+    const container = document.getElementById('container');
+    const footer = document.getElementById('footer');
+    const applyTheme = () => {
+      const light = !darkModeToggle.checked;
+      body.classList.toggle('light', light);
+      header.classList.toggle('light', light);
+      container.classList.toggle('light', light);
+      footer.classList.toggle('light', light);
+    };
+    darkModeToggle.addEventListener('change', applyTheme);
+    applyTheme();
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js'));
+    }
+  </script>
+  <script>
+const imageInput = document.getElementById('imageInput');
+const formatSelect = document.getElementById('formatSelect');
+const convertButton = document.getElementById('convertButton');
+const canvas = document.getElementById('canvas');
+const downloadLink = document.getElementById('downloadLink');
+const preview = document.getElementById('previewContainer');
+let img = new Image();
+imageInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = ev => {
+      img.src = ev.target.result;
+      preview.innerHTML = `<img src="${ev.target.result}" alt="preview">`;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+convertButton.addEventListener('click', () => {
+  if(!img.src){ alert('Please choose an image'); return; }
+  if(!img.complete){ img.onload = perform; } else { perform(); }
+});
+function perform(){
+  canvas.width = img.width;
+  canvas.height = img.height;
+  canvas.getContext('2d').drawImage(img,0,0);
+  const format = formatSelect.value;
+  const data = canvas.toDataURL(format);
+  const ext = format.split('/')[1].replace('jpeg','jpg');
+  downloadLink.href = data;
+  downloadLink.download = `converted.${ext}`;
+  downloadLink.textContent = `Download ${ext.toUpperCase()}`;
+  downloadLink.style.display = 'block';
+}
+  </script>
+</body>
+</html>
