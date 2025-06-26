@@ -16,6 +16,8 @@
       --bg-dark: #121212;
       --bg-light: #ffffff;
     }
+    @keyframes gradientMove {0%{background-position:0 0;}100%{background-position:100% 100%;}}
+    @keyframes fadeIn {from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
     body {
       font-family: 'Roboto', sans-serif;
       background: var(--bg-dark);
@@ -25,9 +27,21 @@
       flex-direction: column;
       transition: background 0.3s, color 0.3s;
     }
+    body::before {
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background:linear-gradient(45deg, rgba(187,134,252,0.2), rgba(152,94,255,0.2));
+      background-size:200% 200%;
+      animation: gradientMove 10s alternate infinite;
+    }
     body.light {
       background: var(--bg-light);
       color: #333;
+    }
+    body.light::before{
+      background:linear-gradient(45deg, rgba(187,134,252,0.1), rgba(152,94,255,0.1));
     }
     header, footer {
       background: #1e1e1e;
@@ -42,8 +56,9 @@
       text-decoration: none;
       color: inherit;
       font-weight: 500;
+      transition: color 0.3s;
     }
-    nav a.active { color: var(--primary); }
+    nav a.active, nav a:hover { color: var(--primary); }
     .toggle-switch { display: flex; align-items: center; cursor: pointer; }
     .toggle-switch input { display: none; }
     .slider {
@@ -57,14 +72,14 @@
     input:checked + .slider { background: var(--primary); }
     input:checked + .slider:before { transform: translateX(20px); }
     main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 2rem; }
-    .container { background: #1e1e1e; padding: 2rem; border-radius: 10px; width: 100%; max-width: 500px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+    .container { background: #1e1e1e; padding: 2rem; border-radius: 10px; width: 100%; max-width: 500px; box-shadow: 0 0 10px rgba(0,0,0,0.5); opacity:0; animation: fadeIn 1s ease forwards; }
     .container.light { background: #fff; }
     .container h2 { text-align: center; margin-bottom: 1rem; }
     .input-group { margin-bottom: 1rem; }
     input, select, button { width: 100%; padding: 0.5rem; border-radius: 5px; border: 1px solid #444; background: transparent; color: inherit; }
     input:focus, select:focus, button:focus { outline: none; border-color: var(--primary); }
-    button { background: var(--primary); border: none; color: #fff; cursor: pointer; transition: background 0.3s; }
-    button:hover { background: var(--primary-dark); }
+    button { background: var(--primary); border: none; color: #fff; cursor: pointer; transition: background 0.3s, box-shadow 0.3s; }
+    button:hover { background: var(--primary-dark); box-shadow:0 2px 6px rgba(0,0,0,0.4); }
     #downloadLink { display: none; margin-top: 1rem; text-align: center; text-decoration: none; background: var(--primary); color: #fff; padding: 0.5rem; border-radius: 5px; }
     #previewContainer { text-align: center; margin-bottom: 1rem; }
     #previewContainer img { max-width: 100%; border-radius: 5px; }

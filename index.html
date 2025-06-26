@@ -16,6 +16,10 @@
       --bg-dark: #121212;
       --bg-light: #ffffff;
     }
+    @keyframes gradientMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 100% 100%; }
+    }
     body {
       font-family: 'Roboto', sans-serif;
       background: var(--bg-dark);
@@ -25,7 +29,19 @@
       flex-direction: column;
       transition: background 0.3s, color 0.3s;
     }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(45deg, rgba(187,134,252,0.2), rgba(152,94,255,0.2));
+      background-size: 200% 200%;
+      animation: gradientMove 10s alternate infinite;
+    }
     body.light { background: var(--bg-light); color: #333; }
+    body.light::before {
+      background: linear-gradient(45deg, rgba(187,134,252,0.1), rgba(152,94,255,0.1));
+    }
     header, footer {
       background: #1e1e1e;
       padding: 1rem 2rem;
@@ -34,8 +50,8 @@
       align-items: center;
     }
     header.light, footer.light { background: #f0f0f0; }
-    nav a { margin-left: 1rem; text-decoration: none; color: inherit; font-weight: 500; }
-    nav a.active { color: var(--primary); }
+    nav a { margin-left: 1rem; text-decoration: none; color: inherit; font-weight: 500; transition: color 0.3s; }
+    nav a.active, nav a:hover { color: var(--primary); }
     .toggle-switch { display: flex; align-items: center; cursor: pointer; }
     .toggle-switch input { display: none; }
     .slider { width: 40px; height: 20px; background: #555; border-radius: 20px; position: relative; margin-left: 0.5rem; transition: background 0.3s; }
@@ -43,13 +59,19 @@
     input:checked + .slider { background: var(--primary); }
     input:checked + .slider:before { transform: translateX(20px); }
     main { flex:1; padding:2rem; text-align:center; }
-    .hero { margin-bottom:2rem; }
+    .hero { margin-bottom:2rem; padding:3rem 1rem; border-radius:10px; background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%); color:#fff; animation: fadeIn 1s ease forwards; opacity:0; }
     .hero h2 { font-size:2rem; margin-bottom:0.5rem; }
+    @keyframes fadeIn { from {opacity:0; transform: translateY(20px);} to {opacity:1; transform:none;} }
     .cta { display:inline-block; background:var(--primary); color:#fff; padding:0.75rem 1.5rem; border-radius:5px; text-decoration:none; transition:background 0.3s; margin-top:1rem; }
     .cta:hover { background:var(--primary-dark); }
     .cards { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:1rem; }
-    .card { background:#1e1e1e; padding:1rem; border-radius:8px; width:160px; text-decoration:none; color:inherit; box-shadow:0 2px 6px rgba(0,0,0,0.4); transition:transform 0.2s; }
-    .card:hover { transform:translateY(-4px); }
+    .cards .card:nth-child(1) { animation-delay: 0.2s; }
+    .cards .card:nth-child(2) { animation-delay: 0.4s; }
+    .cards .card:nth-child(3) { animation-delay: 0.6s; }
+    .cards .card:nth-child(4) { animation-delay: 0.8s; }
+    .cards .card:nth-child(5) { animation-delay: 1s; }
+    .card { background:#1e1e1e; padding:1rem; border-radius:8px; width:160px; text-decoration:none; color:inherit; box-shadow:0 2px 6px rgba(0,0,0,0.4); transition:transform 0.3s, box-shadow 0.3s; opacity:0; animation: fadeIn 0.8s ease forwards; }
+    .card:hover { transform:translateY(-6px); box-shadow:0 4px 10px rgba(0,0,0,0.5); }
     .card h4 { margin-bottom:0.5rem; }
     .light .card { background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
   </style>
